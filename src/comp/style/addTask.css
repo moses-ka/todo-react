@@ -1,3 +1,10 @@
+.wrapper{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+}
 .add-task-container{
     display: flex;
     flex-direction: column;
@@ -6,5 +13,26 @@
     border: 1px solid black;
     border-radius: 20px;
     background-color: aliceblue;
+    width: 400px;
+    padding: 10px;
   }
-  
+  .tasks-container{
+      display:flex ;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid black;
+      border-radius: 20px;
+      background-color: aliceblue;
+      width: 400px;
+      padding: 10px;
+  }
+  .img-add{
+      width: 15px;
+      height: 15px;
+      
+  }
+  .img-del ,.img-edit{
+    width: 25px;
+    height: 25px;
+  }
