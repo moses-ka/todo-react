@@ -7,38 +7,59 @@ const AddTask = () => {
   const [task, setTask] = useState("");
   const [savedTasks, setSavedTasks] = useState([]);
   useEffect(() => {
+  
     if (savedTasks.length !== 0 ) {
       
     
     localStorage.setItem("tasks", JSON.stringify(savedTasks));
-    console.log(savedTasks);
     }
   }, [savedTasks]);
-
-  // useEffect(() => {
-
-  //   console.log(localStorage.getItem("tasks"));
-  // }, [savedTasks]);
-
- 
-
+  
+  const localS = JSON.parse(localStorage.getItem("tasks")) || [];
+  useEffect(() => {
+    setSavedTasks(localS);
+  }, []);
+  
   const handleSubmit = (event) => {
     event.preventDefault();
-    setSavedTasks([...savedTasks, task]);
-    setTask("");
+    if (task.trim() !== "") {
+      setSavedTasks([...savedTasks, task]);
+      setTask("");
+    }
   };
-
+  
   const handleDelete = (index) => {
     const newTasks = [...savedTasks];
-    newTasks.splice(index, 1);
+    newTasks.splice(index,1);
     setSavedTasks(newTasks);
+    localStorage.setItem("tasks", JSON.stringify(newTasks));
+   
   };
+  
 
   const handleEdit = (index, text) => {
     const newTasks = [...savedTasks];
     newTasks[index] = text;
     setSavedTasks(newTasks);
+  
+
   };
+  const post = () => {
+    return savedTasks.map((task, index) => (
+      <div className="tasks" key={index}>
+        <Tasks
+          key={index}
+          text={task}
+          index={index}
+          onDelete={handleDelete}
+          onEdit={handleEdit}
+          savedTasks={savedTasks}
+        />
+
+      </div>
+    ));
+  };
+  
 
   return (
     <>
@@ -66,15 +87,7 @@ const AddTask = () => {
           </form>
         </div>
         <div className="tasks-container">
-          {savedTasks.map((task, index) => (
-            <Tasks
-              key={index}
-              text={task}
-              index={index}
-              onDelete={handleDelete}
-              onEdit={handleEdit}
-            />
-          ))}
+            {post()}
         </div>
       </div>
     </>
@@ -82,3 +95,12 @@ const AddTask = () => {
 };
 
 export default AddTask;
+//useEffect(() => {
+    //save tasks to local storage on window close
+  //   const saveTasksToLocalStorage = () =>
+  //     localStorage.setItem("reactTasks", JSON.stringify(tasks));
+  //   window.addEventListener("beforeunload", saveTasksToLocalStorage);
+  //   return () => {
+  //     window.removeEventListener("beforeunload", saveTasksToLocalStorage);
+  //   };
+  // }, [tasks]);

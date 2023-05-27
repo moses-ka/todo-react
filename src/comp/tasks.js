@@ -2,11 +2,12 @@ import React, { useState } from "react";
 import ImgDel from "../assets/x-mark.png";
 
 const Tasks = (props) => {
+  const { savedTasks, index, onDelete, onEdit } = props;
   const [isEditable, setIsEditable] = useState(false);
-  const [text, setText] = useState(props.text);
+  const [text, setText] = useState(savedTasks[index]);
 
   const handleDeleteClick = () => {
-    props.onDelete(props.index);
+    onDelete(index);
   };
 
   const handleInputChange = (event) => {
@@ -15,7 +16,13 @@ const Tasks = (props) => {
 
   const handleInputBlur = () => {
     setIsEditable(false);
-    props.onEdit(props.index, text);
+    onEdit(index, text);
+  };
+
+  const handleKeyDown = (event) => {
+    if (event.keyCode === 13) {
+      handleInputBlur();
+    }
   };
 
   return (
@@ -27,11 +34,12 @@ const Tasks = (props) => {
           value={text}
           onChange={handleInputChange}
           onBlur={handleInputBlur}
+          onKeyDown={handleKeyDown}
           autoFocus
         />
       ) : (
         <p className="Ptasks" onClick={() => setIsEditable(true)}>
-          {text}
+          {savedTasks[index]}
         </p>
       )}
       <img
@@ -43,5 +51,6 @@ const Tasks = (props) => {
     </>
   );
 };
+
 
 export default Tasks;
